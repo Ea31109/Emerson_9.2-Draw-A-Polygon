@@ -2,12 +2,9 @@ from turtle import *
 import random
 
 
+
 def generate_random_hex_color():
     return f"#{random.randint(0, 0xFFFFFF):06x}"
-
-screen = Screen()
-screen.bgcolor("black")
-screen.setup(600,600)
 
 def polygon(sides):
     pen = Turtle()
@@ -23,18 +20,29 @@ def polygon(sides):
         pen.rt(360/sides)
     pen.end_fill()
 
-def forward_balls(turtle):
+def forward_balls(turtle,list):
     turtle.fd(5)
     if turtle.xcor() > 245 or turtle.xcor() < -245:
         turtle.speed(0)
         turtle.setheading(180 - turtle.heading())
+        turtle_list.append(make_turtle())
         turtle.speed(0)
         turtle.fd(10)
     elif turtle.ycor() > 245 or turtle.ycor() < -245:
         turtle.speed(0)
         turtle.setheading(-turtle.heading())
+        turtle_list.append(make_turtle())
         turtle.speed(0)
         turtle.fd(10)
+    return turtle_list
+
+def make_turtle():
+    t = Turtle()
+    t.color(generate_random_hex_color())
+    t.shape("turtle")
+    t.setheading(random.randint(0,360))
+    return t
+
 
 def XY(turtle, X, Y):
     newX = turtle.xcor() + X
@@ -46,6 +54,9 @@ def XY(turtle, X, Y):
         newY *= -1
         newY = turtle.ycor()  
 
+screen = Screen()
+screen.bgcolor("black")
+screen.setup(600,600)
 
 polygon(4)
 
@@ -54,7 +65,10 @@ t.color("green")
 t.shape("turtle")
 t.setheading(random.randint(0,360))
 
+turtle_list = [t]
+
 while True:
-    forward_balls(t)
+    for thing in turtle_list:
+        turtle_list = forward_balls(thing, turtle_list)
 
 screen.exitonclick()
