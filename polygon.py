@@ -24,6 +24,8 @@ while True:
     if sides == 3:
         polygon(pen, sides)
         name.write("triangle"),
+    if sides == 4:
+        
     if sides == 5:
         polygon(pen, sides)
         name.write("pentagon"),

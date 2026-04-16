@@ -20,7 +20,7 @@ def polygon(sides):
         pen.rt(360/sides)
     pen.end_fill()
 
-def forward_balls(turtle,list):
+def forward_balls(turtle, list):
     turtle.fd(5)
     if turtle.xcor() > 245 or turtle.xcor() < -245:
         turtle.speed(0)
@@ -43,6 +43,44 @@ def make_turtle():
     t.setheading(random.randint(0,360))
     return t
 
+def make_player():
+    global player 
+    player = Turtle()
+    player.color("green")
+    player.shape("turtle")
+    player.speed(0)
+    
+def up():
+    global player
+    player.setheading(90)
+    player.sety(player.ycor() + 5)
+
+def down():
+    global player
+    player.setheading(270)
+    player.sety(player.ycor() - 5)
+
+def left():
+    global player
+    player.setheading(180)
+    player.setx(player.xcor() - 5)
+
+def right():
+    global player
+    player.setheading(0)
+    player.setx(player.xcor() + 5)
+
+def turn_right():
+    global player
+    player.right(10)
+
+def turn_left():
+    global player
+    player.left(10)
+
+
+
+
 
 def XY(turtle, X, Y):
     newX = turtle.xcor() + X
@@ -58,6 +96,13 @@ screen = Screen()
 screen.bgcolor("black")
 screen.setup(600,600)
 
+screen.listen()
+screen.onkeypress(make_player, "space")
+screen.onkeypress(up, "Up")
+screen.onkeypress(down, "Down")
+screen.onkeypress(turn_left, "Left")
+screen.onkeypress(turn_right, "Right")
+
 polygon(4)
 
 t = Turtle()
@@ -67,8 +112,16 @@ t.setheading(random.randint(0,360))
 
 turtle_list = [t]
 
+player = None
+
 while True:
+    if player != None:
+        turtle_list = forward_balls(player, turtle_list)
     for thing in turtle_list:
         turtle_list = forward_balls(thing, turtle_list)
+        if player != None and thing.distance(player) < 20:
+            thing.hideturtle()
+            turtle_list.remove(thing)
+
 
 screen.exitonclick()
